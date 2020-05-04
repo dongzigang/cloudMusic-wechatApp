@@ -1,0 +1,10 @@
+<!--components/playlist/playlist.wxml-->
+<view class="playItem-ctn" bindtap="goToPlayList"  wx:if="{{playItem.name}}">
+  <image src="{{playItem.picUrl}}" class="playItem-cover"></image>
+  <view class="playItem-count">
+    <image class="listen-icon" src="../../images/listen.png"></image>
+    <text>{{_count}}</text>
+  </view>
+  <view  class="playItem-name">{{playItem.name}}</view>
+</view>
+<view wx:else class="playItem-ctn"></view>

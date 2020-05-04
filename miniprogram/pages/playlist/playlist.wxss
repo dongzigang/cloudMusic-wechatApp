@@ -1,0 +1,14 @@
+/* miniprogram/pages/playlist/playlist.wxss */
+.swiper-ctn {
+  height: 345rpx;
+}
+.swiper-image {
+  width: 100%;
+
+}
+.playlist-ctn {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding-top: 10rpx;
+}
