@@ -34,8 +34,12 @@ Page({
           name:pl.name
         }
       })
+      this._setMusicList()
       wx.hideLoading()
     })
+  },
+  _setMusicList(){
+    wx.setStorageSync('musicList',this.data.musicList)
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
