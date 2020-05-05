@@ -1,4 +1,5 @@
 // components/musiclist/musiclist.js
+const app = getApp()
 Component({
   /**
    * 组件的属性列表
@@ -6,7 +7,14 @@ Component({
   properties: {
     musiclist:Array
   },
+  pageLifetimes: {
+    show() {
+      this.setData({
+        playingId:parseInt(app.getPlayMusicId())
+      })
 
+    }
+  },
   /**
    * 组件的初始数据
    */

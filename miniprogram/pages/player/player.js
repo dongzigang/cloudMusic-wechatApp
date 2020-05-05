@@ -2,7 +2,7 @@
 let musicList = []
 let nowPlayingIndex = -1
 const backgroundAudioManager = wx.getBackgroundAudioManager()
-
+const app = getApp()
 Page({
 
   /**
@@ -13,7 +13,7 @@ Page({
     isLyricShow:false,
     isPlaying:false,
     lyric:'',
-    isSame:'',
+    isSame:false,
   },
 
   /**
@@ -26,7 +26,18 @@ Page({
   },
   // 加载音乐
   _loadMusicDetail(id){
-    backgroundAudioManager.stop()
+    if (id == app.getPlayMusicId()) {
+      this.setData({
+        isSame: true
+      })
+    } else {
+      this.setData({
+        isSame: false
+      })
+    }
+    if (!this.data.isSame) {
+      backgroundAudioManager.stop()
+    }
     let music = musicList[nowPlayingIndex]
     wx.setNavigationBarTitle({
       title:music.name
@@ -35,6 +46,7 @@ Page({
       picUrl:music.al.picUrl,
       isPlaying:false,
     })
+    app.setPlayMusicId(id)
     wx.cloud.callFunction({
       name:'music',
       data:{
@@ -42,12 +54,19 @@ Page({
         musicId:id
       }
     }).then((res)=>{
-      console.log(res)
-      backgroundAudioManager.src = res.result.data[0].url
-      backgroundAudioManager.title = music.name
-      backgroundAudioManager.coverImgUrl = music.al.picUrl
-      backgroundAudioManager.singer = music.ar[0].name
-      backgroundAudioManager.epname = music.al.name
+      if (res.result.data[0].url == null) {
+        wx.showToast({
+          title: '无权限播放',
+        })
+        return
+      }
+      if (!this.data.isSame) {
+        backgroundAudioManager.src = res.result.data[0].url
+        backgroundAudioManager.title = music.name
+        backgroundAudioManager.coverImgUrl = music.al.picUrl
+        backgroundAudioManager.singer = music.ar[0].name
+        backgroundAudioManager.epname = music.al.name
+      }
       this.setData({
         isPlaying:true,
       })
@@ -80,13 +99,17 @@ Page({
     })
   },
   onPlay(){
-
+    this.setData({
+      isPlaying:true
+    })
   },
   onPause(){
-
+    this.setData({
+      isPlaying:false
+    })
   },
-  timeUpdate(){
-
+  timeUpdate(event){
+    this.selectComponent('.lyric').update(event.detail.currentTime)
   },
   togglePlaying(){
     if(this.data.isPlaying){
