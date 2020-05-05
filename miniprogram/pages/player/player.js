@@ -51,10 +51,33 @@ Page({
       this.setData({
         isPlaying:true,
       })
+      this._getLyric(id)
+    })
+  },
+  // 获取歌词
+  _getLyric(id){
+    wx.cloud.callFunction({
+      name:'music',
+      data:{
+        $url:'lyric',
+        musicId:id
+      }
+    }).then((res)=>{
+      let lyric = '暂无歌词'
+      const lrc = res.result.lrc.lyric
+      if(lrc){
+        lyric = lrc
+      }
+      console.log(lyric)
+      this.setData({
+        lyric:lyric
+      })
     })
   },
   onChangeLyricShow(){
-
+    this.setData({
+      isLyricShow:!this.data.isLyricShow
+    })
   },
   onPlay(){
 
