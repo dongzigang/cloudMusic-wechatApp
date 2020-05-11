@@ -49,6 +49,12 @@
 					"pathName": "pages/musiclist/musiclist",
 					"query": "id= 2332153273",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "发现",
+					"pathName": "pages/blog/blog",
+					"scene": null
 				}
 			]
 		}
